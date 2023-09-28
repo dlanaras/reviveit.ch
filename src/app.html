@@ -5,6 +5,23 @@
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 		<meta name="viewport" content="width=device-width" />
 		%sveltekit.head%
+		<style>
+			html, body {
+				background-color: black;
+				margin: 0;
+			}
+			* {
+				color: white;
+				font-family: "Lilex NerdFont Regular";
+			}
+			a {
+				text-decoration: none;
+			}
+			@font-face {
+				font-family: "Lilex NerdFont Regular";
+				src: url("fonts/LilexNerdFont-Regular.ttf");
+			}
+		</style>
 	</head>
 	<body data-sveltekit-preload-data="hover">
 		<div style="display: contents">%sveltekit.body%</div>
