@@ -1,0 +1,3 @@
+User-Agent: *
+Allow: *
+Sitemap: https://reviveit.ch/sitemap.xml
