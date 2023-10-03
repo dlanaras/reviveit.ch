@@ -10,7 +10,7 @@
   {#if (path !== "/")}
   <h3>{name}</h3>
   {:else}
-  <img src="favicon.png" alt="ReviveIT logo" width="48px" height="48px">
+  <img src="reviveit.logo.png" alt="ReviveIT logo" width="48px" height="48px">
   {/if}
 </a>
 
