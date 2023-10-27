@@ -60,10 +60,7 @@ impl Cpu {
         conn.run(move |c| {
             let updated_cpu = diesel::update(cpus::table.filter(cpus::id.eq(cpu.id)));
             updated_cpu
-                .set(cpus::model.eq(cpu.model))
-                /*.set(cpus::base_frequency.eq(cpu.base_frequency))
-                .set(cpus::boost_frequency.eq(cpu.boost_frequency))
-                .set(cpus::cores.eq(cpu.cores))*/
+                .set((cpus::model.eq(cpu.model), cpus::base_frequency.eq(cpu.base_frequency), cpus::boost_frequency.eq(cpu.boost_frequency), cpus::cores.eq(cpu.cores)))
                 .execute(c)
         })
         .await
