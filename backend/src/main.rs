@@ -13,6 +13,7 @@ use models::mobo::{Mobo, NewMobo};
 use models::ram::{Ram, NewRam};
 use models::psu::{Psu, NewPsu};
 use models::ssd::{Ssd, NewSsd};
+use models::hdd::{Hdd, NewHdd};
 
 pub mod rocket_anyhow;
 pub mod models;
@@ -193,6 +194,32 @@ async fn delete_ssd(conn: DbConn, id: i32) -> Result<NoContent> {
     Ok(NoContent)
 }
 
+// HDD
+#[get("/hdds")]
+async fn index_hdd(conn: DbConn) -> Result<(ContentType, String)> {
+    let hdds = Hdd::all(&conn).await?;
+    let json = serde_json::to_string(&hdds)?;
+    Ok((ContentType::JSON, json))
+}
+
+#[post("/hdds", data="<hdd>")]
+async fn create_hdd(conn: DbConn, hdd: Json<NewHdd>) -> Result<Created<()>> {
+    let created_id = Hdd::insert(hdd.0, &conn).await?;
+    Ok(Created::new(format!("/hdds/{}", created_id)))
+}
+
+#[put("/hdds", data="<hdd>")]
+async fn edit_hdd(conn: DbConn, hdd: Json<Hdd>) -> Result<NoContent> {
+    Hdd::update(hdd.0, &conn).await?;
+    Ok(NoContent)
+}
+
+#[delete("/hdds/<id>")]
+async fn delete_hdd(conn: DbConn, id: i32) -> Result<NoContent> {
+    Hdd::delete(id, &conn).await?;
+    Ok(NoContent)
+}
+
 #[launch]
 fn rocket() -> _ {
     rocket::build()
@@ -200,5 +227,6 @@ fn rocket() -> _ {
         .attach(AdHoc::on_ignite("Run migrations", run_migrations))
         .mount("/", routes![index_cpu, create_cpu, edit_cpu, delete_cpu, index_gpu, create_gpu, edit_gpu, delete_gpu,
             index_mobo, create_mobo, edit_mobo, delete_mobo, index_ram, create_ram, edit_ram, delete_ram,
-            index_psu, create_psu, edit_psu, delete_psu, index_ssd, create_ssd, edit_ssd, delete_ssd])
+            index_psu, create_psu, edit_psu, delete_psu, index_ssd, create_ssd, edit_ssd, delete_ssd,
+            index_hdd, create_hdd, edit_hdd, delete_hdd])
 }
