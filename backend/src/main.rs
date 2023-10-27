@@ -16,6 +16,7 @@ use models::ssd::{Ssd, NewSsd};
 use models::hdd::{Hdd, NewHdd};
 use models::fan::{Fan, NewFan};
 use models::cooler::{Cooler, NewCooler};
+use models::case::{Case, NewCase};
 
 pub mod rocket_anyhow;
 pub mod models;
@@ -274,6 +275,32 @@ async fn delete_cooler(conn: DbConn, id: i32) -> Result<NoContent> {
     Ok(NoContent)
 }
 
+// Cases
+#[get("/cases")]
+async fn index_case(conn: DbConn) -> Result<(ContentType, String)> {
+    let cases = Case::all(&conn).await?;
+    let json = serde_json::to_string(&cases)?;
+    Ok((ContentType::JSON, json))
+}
+
+#[post("/cases", data="<case>")]
+async fn create_case(conn: DbConn, case: Json<NewCase>) -> Result<Created<()>> {
+    let created_id = Case::insert(case.0, &conn).await?;
+    Ok(Created::new(format!("/cases/{}", created_id)))
+}
+
+#[put("/cases", data="<case>")]
+async fn edit_case(conn: DbConn, case: Json<Case>) -> Result<NoContent> {
+    Case::update(case.0, &conn).await?;
+    Ok(NoContent)
+}
+
+#[delete("/cases/<id>")]
+async fn delete_case(conn: DbConn, id: i32) -> Result<NoContent> {
+    Case::delete(id, &conn).await?;
+    Ok(NoContent)
+}
+
 #[launch]
 fn rocket() -> _ {
     rocket::build()
@@ -283,5 +310,5 @@ fn rocket() -> _ {
             index_mobo, create_mobo, edit_mobo, delete_mobo, index_ram, create_ram, edit_ram, delete_ram,
             index_psu, create_psu, edit_psu, delete_psu, index_ssd, create_ssd, edit_ssd, delete_ssd,
             index_hdd, create_hdd, edit_hdd, delete_hdd, index_fan, create_fan, edit_fan, delete_fan,
-            index_cooler, create_cooler, edit_cooler, delete_cooler])
+            index_cooler, create_cooler, edit_cooler, delete_cooler, index_case, create_case, edit_case, delete_case])
 }

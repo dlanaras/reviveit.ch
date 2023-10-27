@@ -7,3 +7,4 @@ pub mod ssd;
 pub mod hdd;
 pub mod fan;
 pub mod cooler;
+pub mod case;
