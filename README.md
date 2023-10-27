@@ -1,4 +1,4 @@
-# WELCOME TO REVIVEIT
-## DON'T WANT IT? WE REVIVE IT!
+# Welcome to the official ReviveIT Repository
+## Don't want it? We revive IT!
 
 This is our github repo for the [reviveit.ch](https://reviveit.ch) website.
