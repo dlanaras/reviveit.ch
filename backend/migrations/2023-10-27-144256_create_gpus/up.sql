@@ -8,5 +8,5 @@ CREATE TABLE gpus (
     vendor_model VARCHAR(100) NOT NULL,
     memory INTEGER NOT NULL, -- IN MB
     memory_type VARCHAR(100) NOT NULL, -- i.e: GDDR6
-    additional_features VARCHAR(100) NULL
+    additional_features VARCHAR(255) NULL
 )
