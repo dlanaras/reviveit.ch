@@ -9,6 +9,7 @@ use rocket::{Rocket,Build, fairing::AdHoc, http::ContentType, response::status::
 use rocket_anyhow::Result;
 use models::cpu::{Cpu, NewCpu};
 use models::gpu::{Gpu, NewGpu};
+use models::mobo::{Mobo, NewMobo};
 
 pub mod rocket_anyhow;
 pub mod models;
@@ -85,10 +86,36 @@ async fn delete_gpu(conn: DbConn, id: i32) -> Result<NoContent> {
     Ok(NoContent)
 }
 
+// Motherboards
+#[get("/mobos")]
+async fn index_mobo(conn: DbConn) -> Result<(ContentType, String)> {
+    let mobos = Mobo::all(&conn).await?;
+    let json = serde_json::to_string(&mobos)?;
+    Ok((ContentType::JSON, json))
+}
+
+#[post("/mobos", data="<mobo>")]
+async fn create_mobo(conn: DbConn, mobo: Json<NewMobo>) -> Result<Created<()>> {
+    let created_id = Mobo::insert(mobo.0, &conn).await?;
+    Ok(Created::new(format!("/mobos/{}", created_id)))
+}
+
+#[put("/mobos", data="<mobo>")]
+async fn edit_mobo(conn: DbConn, mobo: Json<Mobo>) -> Result<NoContent> {
+    Mobo::update(mobo.0, &conn).await?;
+    Ok(NoContent)
+}
+
+#[delete("/mobos/<id>")]
+async fn delete_mobo(conn: DbConn, id: i32) -> Result<NoContent> {
+    Mobo::delete(id, &conn).await?;
+    Ok(NoContent)
+}
+
 #[launch]
 fn rocket() -> _ {
     rocket::build()
         .attach(DbConn::fairing())
         .attach(AdHoc::on_ignite("Run migrations", run_migrations))
-        .mount("/", routes![index_cpu, create_cpu, edit_cpu, delete_cpu, index_gpu, create_gpu, edit_gpu, delete_gpu])
+        .mount("/", routes![index_cpu, create_cpu, edit_cpu, delete_cpu, index_gpu, create_gpu, edit_gpu, delete_gpu, index_mobo, create_mobo, edit_mobo, delete_mobo])
 }
