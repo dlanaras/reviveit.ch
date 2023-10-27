@@ -6,3 +6,4 @@ pub mod psu;
 pub mod ssd;
 pub mod hdd;
 pub mod fan;
+pub mod cooler;

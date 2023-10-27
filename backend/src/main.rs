@@ -15,6 +15,7 @@ use models::psu::{Psu, NewPsu};
 use models::ssd::{Ssd, NewSsd};
 use models::hdd::{Hdd, NewHdd};
 use models::fan::{Fan, NewFan};
+use models::cooler::{Cooler, NewCooler};
 
 pub mod rocket_anyhow;
 pub mod models;
@@ -247,6 +248,32 @@ async fn delete_fan(conn: DbConn, id: i32) -> Result<NoContent> {
     Ok(NoContent)
 }
 
+// Coolers
+#[get("/coolers")]
+async fn index_cooler(conn: DbConn) -> Result<(ContentType, String)> {
+    let coolers = Cooler::all(&conn).await?;
+    let json = serde_json::to_string(&coolers)?;
+    Ok((ContentType::JSON, json))
+}
+
+#[post("/coolers", data="<cooler>")]
+async fn create_cooler(conn: DbConn, cooler: Json<NewCooler>) -> Result<Created<()>> {
+    let created_id = Cooler::insert(cooler.0, &conn).await?;
+    Ok(Created::new(format!("/coolers/{}", created_id)))
+}
+
+#[put("/coolers", data="<cooler>")]
+async fn edit_cooler(conn: DbConn, cooler: Json<Cooler>) -> Result<NoContent> {
+    Cooler::update(cooler.0, &conn).await?;
+    Ok(NoContent)
+}
+
+#[delete("/coolers/<id>")]
+async fn delete_cooler(conn: DbConn, id: i32) -> Result<NoContent> {
+    Cooler::delete(id, &conn).await?;
+    Ok(NoContent)
+}
+
 #[launch]
 fn rocket() -> _ {
     rocket::build()
@@ -255,5 +282,6 @@ fn rocket() -> _ {
         .mount("/", routes![index_cpu, create_cpu, edit_cpu, delete_cpu, index_gpu, create_gpu, edit_gpu, delete_gpu,
             index_mobo, create_mobo, edit_mobo, delete_mobo, index_ram, create_ram, edit_ram, delete_ram,
             index_psu, create_psu, edit_psu, delete_psu, index_ssd, create_ssd, edit_ssd, delete_ssd,
-            index_hdd, create_hdd, edit_hdd, delete_hdd, index_fan, create_fan, edit_fan, delete_fan])
+            index_hdd, create_hdd, edit_hdd, delete_hdd, index_fan, create_fan, edit_fan, delete_fan,
+            index_cooler, create_cooler, edit_cooler, delete_cooler])
 }
