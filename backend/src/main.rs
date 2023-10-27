@@ -14,6 +14,7 @@ use models::ram::{Ram, NewRam};
 use models::psu::{Psu, NewPsu};
 use models::ssd::{Ssd, NewSsd};
 use models::hdd::{Hdd, NewHdd};
+use models::fan::{Fan, NewFan};
 
 pub mod rocket_anyhow;
 pub mod models;
@@ -220,6 +221,32 @@ async fn delete_hdd(conn: DbConn, id: i32) -> Result<NoContent> {
     Ok(NoContent)
 }
 
+// Fans
+#[get("/fans")]
+async fn index_fan(conn: DbConn) -> Result<(ContentType, String)> {
+    let fans = Fan::all(&conn).await?;
+    let json = serde_json::to_string(&fans)?;
+    Ok((ContentType::JSON, json))
+}
+
+#[post("/fans", data="<fan>")]
+async fn create_fan(conn: DbConn, fan: Json<NewFan>) -> Result<Created<()>> {
+    let created_id = Fan::insert(fan.0, &conn).await?;
+    Ok(Created::new(format!("/fans/{}", created_id)))
+}
+
+#[put("/fans", data="<fan>")]
+async fn edit_fan(conn: DbConn, fan: Json<Fan>) -> Result<NoContent> {
+    Fan::update(fan.0, &conn).await?;
+    Ok(NoContent)
+}
+
+#[delete("/fans/<id>")]
+async fn delete_fan(conn: DbConn, id: i32) -> Result<NoContent> {
+    Fan::delete(id, &conn).await?;
+    Ok(NoContent)
+}
+
 #[launch]
 fn rocket() -> _ {
     rocket::build()
@@ -228,5 +255,5 @@ fn rocket() -> _ {
         .mount("/", routes![index_cpu, create_cpu, edit_cpu, delete_cpu, index_gpu, create_gpu, edit_gpu, delete_gpu,
             index_mobo, create_mobo, edit_mobo, delete_mobo, index_ram, create_ram, edit_ram, delete_ram,
             index_psu, create_psu, edit_psu, delete_psu, index_ssd, create_ssd, edit_ssd, delete_ssd,
-            index_hdd, create_hdd, edit_hdd, delete_hdd])
+            index_hdd, create_hdd, edit_hdd, delete_hdd, index_fan, create_fan, edit_fan, delete_fan])
 }

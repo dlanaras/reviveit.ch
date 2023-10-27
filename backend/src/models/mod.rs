@@ -5,3 +5,4 @@ pub mod ram;
 pub mod psu;
 pub mod ssd;
 pub mod hdd;
+pub mod fan;
