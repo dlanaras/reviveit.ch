@@ -11,6 +11,7 @@ use models::cpu::{Cpu, NewCpu};
 use models::gpu::{Gpu, NewGpu};
 use models::mobo::{Mobo, NewMobo};
 use models::ram::{Ram, NewRam};
+use models::psu::{Psu, NewPsu};
 
 pub mod rocket_anyhow;
 pub mod models;
@@ -139,11 +140,38 @@ async fn delete_ram(conn: DbConn, id: i32) -> Result<NoContent> {
     Ok(NoContent)
 }
 
+// PSU
+#[get("/psus")]
+async fn index_psu(conn: DbConn) -> Result<(ContentType, String)> {
+    let psus = Psu::all(&conn).await?;
+    let json = serde_json::to_string(&psus)?;
+    Ok((ContentType::JSON, json))
+}
+
+#[post("/psus", data="<psu>")]
+async fn create_psu(conn: DbConn, psu: Json<NewPsu>) -> Result<Created<()>> {
+    let created_id = Psu::insert(psu.0, &conn).await?;
+    Ok(Created::new(format!("/psus/{}", created_id)))
+}
+
+#[put("/psus", data="<psu>")]
+async fn edit_psu(conn: DbConn, psu: Json<Psu>) -> Result<NoContent> {
+    Psu::update(psu.0, &conn).await?;
+    Ok(NoContent)
+}
+
+#[delete("/psus/<id>")]
+async fn delete_psu(conn: DbConn, id: i32) -> Result<NoContent> {
+    Psu::delete(id, &conn).await?;
+    Ok(NoContent)
+}
+
 #[launch]
 fn rocket() -> _ {
     rocket::build()
         .attach(DbConn::fairing())
         .attach(AdHoc::on_ignite("Run migrations", run_migrations))
         .mount("/", routes![index_cpu, create_cpu, edit_cpu, delete_cpu, index_gpu, create_gpu, edit_gpu, delete_gpu,
-            index_mobo, create_mobo, edit_mobo, delete_mobo, index_ram, create_ram, edit_ram, delete_ram])
+            index_mobo, create_mobo, edit_mobo, delete_mobo, index_ram, create_ram, edit_ram, delete_ram,
+            index_psu, create_psu, edit_psu, delete_psu])
 }
