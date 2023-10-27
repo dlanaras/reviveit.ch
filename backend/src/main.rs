@@ -10,6 +10,7 @@ use rocket_anyhow::Result;
 use models::cpu::{Cpu, NewCpu};
 use models::gpu::{Gpu, NewGpu};
 use models::mobo::{Mobo, NewMobo};
+use models::ram::{Ram, NewRam};
 
 pub mod rocket_anyhow;
 pub mod models;
@@ -112,10 +113,37 @@ async fn delete_mobo(conn: DbConn, id: i32) -> Result<NoContent> {
     Ok(NoContent)
 }
 
+// RAM
+#[get("/rams")]
+async fn index_ram(conn: DbConn) -> Result<(ContentType, String)> {
+    let rams = Ram::all(&conn).await?;
+    let json = serde_json::to_string(&rams)?;
+    Ok((ContentType::JSON, json))
+}
+
+#[post("/rams", data="<ram>")]
+async fn create_ram(conn: DbConn, ram: Json<NewRam>) -> Result<Created<()>> {
+    let created_id = Ram::insert(ram.0, &conn).await?;
+    Ok(Created::new(format!("/rams/{}", created_id)))
+}
+
+#[put("/rams", data="<ram>")]
+async fn edit_ram(conn: DbConn, ram: Json<Ram>) -> Result<NoContent> {
+    Ram::update(ram.0, &conn).await?;
+    Ok(NoContent)
+}
+
+#[delete("/rams/<id>")]
+async fn delete_ram(conn: DbConn, id: i32) -> Result<NoContent> {
+    Ram::delete(id, &conn).await?;
+    Ok(NoContent)
+}
+
 #[launch]
 fn rocket() -> _ {
     rocket::build()
         .attach(DbConn::fairing())
         .attach(AdHoc::on_ignite("Run migrations", run_migrations))
-        .mount("/", routes![index_cpu, create_cpu, edit_cpu, delete_cpu, index_gpu, create_gpu, edit_gpu, delete_gpu, index_mobo, create_mobo, edit_mobo, delete_mobo])
+        .mount("/", routes![index_cpu, create_cpu, edit_cpu, delete_cpu, index_gpu, create_gpu, edit_gpu, delete_gpu,
+            index_mobo, create_mobo, edit_mobo, delete_mobo, index_ram, create_ram, edit_ram, delete_ram])
 }
