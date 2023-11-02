@@ -25,7 +25,7 @@
           pkg = packages.reviveit;
         in {
           inherit (pkg) buildInputs;
-          nativeBuildInputs = pkg.nativeBuildInputs ++ (with pkgs; [rust-analyzer rustfmt]);
+          nativeBuildInputs = pkg.nativeBuildInputs ++ (with pkgs; [rust-analyzer rustfmt nodejs]);
         });
 
         formatter = pkgs.alejandra;

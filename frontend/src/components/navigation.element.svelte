@@ -8,9 +8,9 @@
 
 <a href={path} class={$page.url.pathname === path ? "active" : ""}>
   {#if (path !== "/")}
-  <h3>{name}</h3>
+  <h1>{name}</h1>
   {:else}
-  <img src="reviveit.logo.png" alt="ReviveIT logo" width="48px" height="48px">
+  <img src="reviveit.logo.png" alt="ReviveIT logo" height="128px">
   {/if}
 </a>
 
@@ -41,5 +41,6 @@
   img {
     margin-top: 16px;
     margin-bottom: 16px;
+    filter: drop-shadow(3px 3px 0 black);
   }
 </style>
