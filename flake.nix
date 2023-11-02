@@ -21,9 +21,12 @@
           default = reviveit;
         };
 
-        devShells.default = pkgs.mkShell {
-          inherit (packages.reviveit) nativeBuildInputs buildInputs;
-        };
+        devShells.default = pkgs.mkShell (let
+          pkg = packages.reviveit;
+        in {
+          inherit (pkg) buildInputs;
+          nativeBuildInputs = pkg.nativeBuildInputs ++ (with pkgs; [rust-analyzer rustfmt]);
+        });
 
         formatter = pkgs.alejandra;
       }
