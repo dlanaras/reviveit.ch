@@ -1,5 +1,5 @@
 use diesel::{self, prelude::*, result::QueryResult};
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 mod schema {
     table! {
@@ -60,14 +60,23 @@ impl Cpu {
         conn.run(move |c| {
             let updated_cpu = diesel::update(cpus::table.filter(cpus::id.eq(cpu.id)));
             updated_cpu
-                .set((cpus::model.eq(cpu.model), cpus::base_frequency.eq(cpu.base_frequency), cpus::boost_frequency.eq(cpu.boost_frequency), cpus::cores.eq(cpu.cores)))
+                .set((
+                    cpus::model.eq(cpu.model),
+                    cpus::base_frequency.eq(cpu.base_frequency),
+                    cpus::boost_frequency.eq(cpu.boost_frequency),
+                    cpus::cores.eq(cpu.cores),
+                ))
                 .execute(c)
         })
         .await
     }
 
     pub async fn delete(id: i32, conn: &DbConn) -> QueryResult<usize> {
-        conn.run(move |c| diesel::delete(cpus::table).filter(cpus::id.eq(id)).execute(c))
-            .await
+        conn.run(move |c| {
+            diesel::delete(cpus::table)
+                .filter(cpus::id.eq(id))
+                .execute(c)
+        })
+        .await
     }
 }

@@ -1,5 +1,5 @@
 use diesel::{self, prelude::*, result::QueryResult};
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 mod schema {
     table! {
@@ -27,7 +27,7 @@ pub struct Cooler {
     pub vendor_model: String,
     pub cooler_type: String,
     pub fan_count: i32,
-    pub fan_dimension: i32
+    pub fan_dimension: i32,
 }
 
 #[derive(Deserialize)]
@@ -36,7 +36,7 @@ pub struct NewCooler {
     pub vendor_model: String,
     pub cooler_type: String,
     pub fan_count: i32,
-    pub fan_dimension: i32
+    pub fan_dimension: i32,
 }
 
 impl Cooler {
@@ -53,7 +53,7 @@ impl Cooler {
                 vendor_model: cooler.vendor_model,
                 cooler_type: cooler.cooler_type,
                 fan_count: cooler.fan_count,
-                fan_dimension: cooler.fan_dimension
+                fan_dimension: cooler.fan_dimension,
             };
             diesel::insert_into(coolers::table).values(&c).execute(conn)
         })
@@ -64,14 +64,24 @@ impl Cooler {
         conn.run(move |c| {
             let updated_cooler = diesel::update(coolers::table.filter(coolers::id.eq(cooler.id)));
             updated_cooler
-                .set((coolers::vendor.eq(cooler.vendor), coolers::vendor_model.eq(cooler.vendor_model), coolers::cooler_type.eq(cooler.cooler_type), coolers::fan_count.eq(cooler.fan_count), coolers::fan_dimension.eq(cooler.fan_dimension)))
+                .set((
+                    coolers::vendor.eq(cooler.vendor),
+                    coolers::vendor_model.eq(cooler.vendor_model),
+                    coolers::cooler_type.eq(cooler.cooler_type),
+                    coolers::fan_count.eq(cooler.fan_count),
+                    coolers::fan_dimension.eq(cooler.fan_dimension),
+                ))
                 .execute(c)
         })
         .await
     }
 
     pub async fn delete(id: i32, conn: &DbConn) -> QueryResult<usize> {
-        conn.run(move |c| diesel::delete(coolers::table).filter(coolers::id.eq(id)).execute(c))
-            .await
+        conn.run(move |c| {
+            diesel::delete(coolers::table)
+                .filter(coolers::id.eq(id))
+                .execute(c)
+        })
+        .await
     }
 }

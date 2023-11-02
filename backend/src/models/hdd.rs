@@ -1,5 +1,5 @@
 use diesel::{self, prelude::*, result::QueryResult};
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 mod schema {
     table! {
@@ -27,7 +27,7 @@ pub struct Hdd {
     pub vendor_model: String,
     pub storage: i32,
     pub form_factor: String,
-    pub rpm: i32
+    pub rpm: i32,
 }
 
 #[derive(Deserialize)]
@@ -36,7 +36,7 @@ pub struct NewHdd {
     pub vendor_model: String,
     pub storage: i32,
     pub form_factor: String,
-    pub rpm: i32
+    pub rpm: i32,
 }
 
 impl Hdd {
@@ -53,7 +53,7 @@ impl Hdd {
                 vendor_model: hdd.vendor_model,
                 storage: hdd.storage,
                 form_factor: hdd.form_factor,
-                rpm: hdd.rpm
+                rpm: hdd.rpm,
             };
             diesel::insert_into(hdds::table).values(&c).execute(conn)
         })
@@ -64,14 +64,24 @@ impl Hdd {
         conn.run(move |c| {
             let updated_hdd = diesel::update(hdds::table.filter(hdds::id.eq(hdd.id)));
             updated_hdd
-                .set((hdds::vendor.eq(hdd.vendor), hdds::vendor_model.eq(hdd.vendor_model), hdds::storage.eq(hdd.storage), hdds::form_factor.eq(hdd.form_factor), hdds::rpm.eq(hdd.rpm)))
+                .set((
+                    hdds::vendor.eq(hdd.vendor),
+                    hdds::vendor_model.eq(hdd.vendor_model),
+                    hdds::storage.eq(hdd.storage),
+                    hdds::form_factor.eq(hdd.form_factor),
+                    hdds::rpm.eq(hdd.rpm),
+                ))
                 .execute(c)
         })
         .await
     }
 
     pub async fn delete(id: i32, conn: &DbConn) -> QueryResult<usize> {
-        conn.run(move |c| diesel::delete(hdds::table).filter(hdds::id.eq(id)).execute(c))
-            .await
+        conn.run(move |c| {
+            diesel::delete(hdds::table)
+                .filter(hdds::id.eq(id))
+                .execute(c)
+        })
+        .await
     }
 }

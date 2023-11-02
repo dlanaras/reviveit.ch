@@ -1,5 +1,5 @@
 use diesel::{self, prelude::*, result::QueryResult};
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 mod schema {
     table! {
@@ -27,7 +27,7 @@ pub struct Psu {
     pub vendor_model: String,
     pub wattage: i32,
     pub eighty_plus: String,
-    pub form_factor: String
+    pub form_factor: String,
 }
 
 #[derive(Deserialize)]
@@ -36,7 +36,7 @@ pub struct NewPsu {
     pub vendor_model: String,
     pub wattage: i32,
     pub eighty_plus: String,
-    pub form_factor: String
+    pub form_factor: String,
 }
 
 impl Psu {
@@ -53,7 +53,7 @@ impl Psu {
                 vendor_model: psu.vendor_model,
                 wattage: psu.wattage,
                 eighty_plus: psu.eighty_plus,
-                form_factor: psu.form_factor 
+                form_factor: psu.form_factor,
             };
             diesel::insert_into(psus::table).values(&c).execute(conn)
         })
@@ -64,14 +64,24 @@ impl Psu {
         conn.run(move |c| {
             let updated_psu = diesel::update(psus::table.filter(psus::id.eq(psu.id)));
             updated_psu
-                .set((psus::vendor.eq(psu.vendor), psus::vendor_model.eq(psu.vendor_model), psus::wattage.eq(psu.wattage), psus::eighty_plus.eq(psu.eighty_plus), psus::form_factor.eq(psu.form_factor)))
+                .set((
+                    psus::vendor.eq(psu.vendor),
+                    psus::vendor_model.eq(psu.vendor_model),
+                    psus::wattage.eq(psu.wattage),
+                    psus::eighty_plus.eq(psu.eighty_plus),
+                    psus::form_factor.eq(psu.form_factor),
+                ))
                 .execute(c)
         })
         .await
     }
 
     pub async fn delete(id: i32, conn: &DbConn) -> QueryResult<usize> {
-        conn.run(move |c| diesel::delete(psus::table).filter(psus::id.eq(id)).execute(c))
-            .await
+        conn.run(move |c| {
+            diesel::delete(psus::table)
+                .filter(psus::id.eq(id))
+                .execute(c)
+        })
+        .await
     }
 }

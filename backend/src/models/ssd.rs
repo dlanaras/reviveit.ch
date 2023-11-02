@@ -1,5 +1,5 @@
 use diesel::{self, prelude::*, result::QueryResult};
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 mod schema {
     table! {
@@ -29,7 +29,7 @@ pub struct Ssd {
     pub storage: i32,
     pub form_factor: String,
     pub read_speed: i32,
-    pub write_speed: i32
+    pub write_speed: i32,
 }
 
 #[derive(Deserialize)]
@@ -39,7 +39,7 @@ pub struct NewSsd {
     pub storage: i32,
     pub form_factor: String,
     pub read_speed: i32,
-    pub write_speed: i32
+    pub write_speed: i32,
 }
 
 impl Ssd {
@@ -57,7 +57,7 @@ impl Ssd {
                 storage: ssd.storage,
                 form_factor: ssd.form_factor,
                 read_speed: ssd.read_speed,
-                write_speed: ssd.write_speed
+                write_speed: ssd.write_speed,
             };
             diesel::insert_into(ssds::table).values(&c).execute(conn)
         })
@@ -68,14 +68,25 @@ impl Ssd {
         conn.run(move |c| {
             let updated_ssd = diesel::update(ssds::table.filter(ssds::id.eq(ssd.id)));
             updated_ssd
-                .set((ssds::vendor.eq(ssd.vendor), ssds::vendor_model.eq(ssd.vendor_model), ssds::storage.eq(ssd.storage), ssds::form_factor.eq(ssd.form_factor), ssds::read_speed.eq(ssd.read_speed), ssds::write_speed.eq(ssd.write_speed)))
+                .set((
+                    ssds::vendor.eq(ssd.vendor),
+                    ssds::vendor_model.eq(ssd.vendor_model),
+                    ssds::storage.eq(ssd.storage),
+                    ssds::form_factor.eq(ssd.form_factor),
+                    ssds::read_speed.eq(ssd.read_speed),
+                    ssds::write_speed.eq(ssd.write_speed),
+                ))
                 .execute(c)
         })
         .await
     }
 
     pub async fn delete(id: i32, conn: &DbConn) -> QueryResult<usize> {
-        conn.run(move |c| diesel::delete(ssds::table).filter(ssds::id.eq(id)).execute(c))
-            .await
+        conn.run(move |c| {
+            diesel::delete(ssds::table)
+                .filter(ssds::id.eq(id))
+                .execute(c)
+        })
+        .await
     }
 }

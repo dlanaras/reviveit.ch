@@ -1,5 +1,5 @@
 use diesel::{self, prelude::*, result::QueryResult};
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 mod schema {
     table! {
@@ -31,7 +31,7 @@ pub struct Case {
     pub fan_slots: i32,
     pub installed_fans: i32,
     pub hdd_slots: i32,
-    pub ssd_slots: i32
+    pub ssd_slots: i32,
 }
 
 #[derive(Deserialize)]
@@ -42,7 +42,7 @@ pub struct NewCase {
     pub fan_slots: i32,
     pub installed_fans: i32,
     pub hdd_slots: i32,
-    pub ssd_slots: i32
+    pub ssd_slots: i32,
 }
 
 impl Case {
@@ -61,7 +61,7 @@ impl Case {
                 fan_slots: case.fan_slots,
                 installed_fans: case.installed_fans,
                 hdd_slots: case.hdd_slots,
-                ssd_slots: case.ssd_slots 
+                ssd_slots: case.ssd_slots,
             };
             diesel::insert_into(cases::table).values(&c).execute(conn)
         })
@@ -72,15 +72,26 @@ impl Case {
         conn.run(move |c| {
             let updated_case = diesel::update(cases::table.filter(cases::id.eq(case.id)));
             updated_case
-                .set((cases::vendor.eq(case.vendor), cases::vendor_model.eq(case.vendor_model), cases::form_factor.eq(case.form_factor), 
-                  cases::fan_slots.eq(case.fan_slots), cases::installed_fans.eq(case.installed_fans), cases::hdd_slots.eq(case.hdd_slots), cases::ssd_slots.eq(case.ssd_slots)))
+                .set((
+                    cases::vendor.eq(case.vendor),
+                    cases::vendor_model.eq(case.vendor_model),
+                    cases::form_factor.eq(case.form_factor),
+                    cases::fan_slots.eq(case.fan_slots),
+                    cases::installed_fans.eq(case.installed_fans),
+                    cases::hdd_slots.eq(case.hdd_slots),
+                    cases::ssd_slots.eq(case.ssd_slots),
+                ))
                 .execute(c)
         })
         .await
     }
 
     pub async fn delete(id: i32, conn: &DbConn) -> QueryResult<usize> {
-        conn.run(move |c| diesel::delete(cases::table).filter(cases::id.eq(id)).execute(c))
-            .await
+        conn.run(move |c| {
+            diesel::delete(cases::table)
+                .filter(cases::id.eq(id))
+                .execute(c)
+        })
+        .await
     }
 }

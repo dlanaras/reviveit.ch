@@ -1,5 +1,5 @@
 use diesel::{self, prelude::*, result::QueryResult};
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 mod schema {
     table! {
@@ -31,7 +31,7 @@ pub struct Ram {
     pub frequency: i32,
     pub cl: i32,
     pub mem_type: String,
-    pub form_factor: String
+    pub form_factor: String,
 }
 
 #[derive(Deserialize)]
@@ -42,7 +42,7 @@ pub struct NewRam {
     pub frequency: i32,
     pub cl: i32,
     pub mem_type: String,
-    pub form_factor: String
+    pub form_factor: String,
 }
 
 impl Ram {
@@ -61,7 +61,7 @@ impl Ram {
                 frequency: ram.frequency,
                 cl: ram.cl,
                 mem_type: ram.mem_type,
-                form_factor: ram.form_factor
+                form_factor: ram.form_factor,
             };
             diesel::insert_into(rams::table).values(&c).execute(conn)
         })
@@ -72,16 +72,26 @@ impl Ram {
         conn.run(move |c| {
             let updated_ram = diesel::update(rams::table.filter(rams::id.eq(ram.id)));
             updated_ram
-                .set((rams::vendor.eq(ram.vendor), rams::vendor_model.eq(ram.vendor_model), rams::size.eq(ram.size),
-                   rams::frequency.eq(ram.frequency), rams::cl.eq(ram.cl), rams::mem_type.eq(ram.mem_type), 
-                   rams::form_factor.eq(ram.form_factor)))
+                .set((
+                    rams::vendor.eq(ram.vendor),
+                    rams::vendor_model.eq(ram.vendor_model),
+                    rams::size.eq(ram.size),
+                    rams::frequency.eq(ram.frequency),
+                    rams::cl.eq(ram.cl),
+                    rams::mem_type.eq(ram.mem_type),
+                    rams::form_factor.eq(ram.form_factor),
+                ))
                 .execute(c)
         })
         .await
     }
 
     pub async fn delete(id: i32, conn: &DbConn) -> QueryResult<usize> {
-        conn.run(move |c| diesel::delete(rams::table).filter(rams::id.eq(id)).execute(c))
-            .await
+        conn.run(move |c| {
+            diesel::delete(rams::table)
+                .filter(rams::id.eq(id))
+                .execute(c)
+        })
+        .await
     }
 }

@@ -8,7 +8,7 @@ pub struct Error(pub anyhow::Error);
 
 impl<E> From<E> for Error
 where
-E: Into<anyhow::Error>,
+    E: Into<anyhow::Error>,
 {
     fn from(error: E) -> Self {
         Error(error.into())

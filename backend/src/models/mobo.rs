@@ -1,5 +1,5 @@
 use diesel::{self, prelude::*, result::QueryResult};
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 mod schema {
     table! {
@@ -35,7 +35,7 @@ pub struct Mobo {
     pub max_memory: i32,
     pub memory_slots: i32,
     pub form_factor: String,
-    pub additional_features: Option<String>
+    pub additional_features: Option<String>,
 }
 
 #[derive(Deserialize)]
@@ -48,7 +48,7 @@ pub struct NewMobo {
     pub max_memory: i32,
     pub memory_slots: i32,
     pub form_factor: String,
-    pub additional_features: Option<String>
+    pub additional_features: Option<String>,
 }
 
 impl Mobo {
@@ -69,7 +69,7 @@ impl Mobo {
                 max_memory: mobo.max_memory,
                 memory_slots: mobo.memory_slots,
                 form_factor: mobo.form_factor,
-                additional_features: mobo.additional_features
+                additional_features: mobo.additional_features,
             };
             diesel::insert_into(mobos::table).values(&g).execute(conn)
         })
@@ -80,16 +80,28 @@ impl Mobo {
         conn.run(move |c| {
             let updated_mobo = diesel::update(mobos::table.filter(mobos::id.eq(mobo.id)));
             updated_mobo
-                .set((mobos::vendor.eq(mobo.vendor), mobos::vendor_model.eq(mobo.vendor_model), mobos::chipset.eq(mobo.chipset), mobos::socket.eq(mobo.socket),
-                  mobos::memory_type.eq(mobo.memory_type), mobos::max_memory.eq(mobo.max_memory), mobos::memory_slots.eq(mobo.memory_slots),
-                  mobos::form_factor.eq(mobo.form_factor), mobos::additional_features.eq(mobo.additional_features)))
+                .set((
+                    mobos::vendor.eq(mobo.vendor),
+                    mobos::vendor_model.eq(mobo.vendor_model),
+                    mobos::chipset.eq(mobo.chipset),
+                    mobos::socket.eq(mobo.socket),
+                    mobos::memory_type.eq(mobo.memory_type),
+                    mobos::max_memory.eq(mobo.max_memory),
+                    mobos::memory_slots.eq(mobo.memory_slots),
+                    mobos::form_factor.eq(mobo.form_factor),
+                    mobos::additional_features.eq(mobo.additional_features),
+                ))
                 .execute(c)
         })
         .await
     }
 
     pub async fn delete(id: i32, conn: &DbConn) -> QueryResult<usize> {
-        conn.run(move |c| diesel::delete(mobos::table).filter(mobos::id.eq(id)).execute(c))
-            .await
+        conn.run(move |c| {
+            diesel::delete(mobos::table)
+                .filter(mobos::id.eq(id))
+                .execute(c)
+        })
+        .await
     }
 }
