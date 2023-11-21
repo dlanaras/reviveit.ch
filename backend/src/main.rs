@@ -5,6 +5,8 @@ extern crate diesel;
 #[macro_use]
 extern crate rocket_sync_db_pools;
 
+use anyhow::anyhow;
+use models::admin::{Admin, NewAdmin};
 use models::case::{Case, NewCase};
 use models::cooler::{Cooler, NewCooler};
 use models::cpu::{Cpu, NewCpu};
@@ -68,7 +70,6 @@ impl<'r> FromRequest<'r> for AdminUser {
 
 #[derive(Deserialize)]
 pub struct LoginData {
-    pub id: i32,
     pub user_name: String,
     pub password: String,
 }
@@ -343,16 +344,24 @@ async fn delete_case(conn: DbConn, id: i32, _admin: AdminUser) -> Result<NoConte
 
 #[post("/auth", data = "<login>")]
 async fn login(conn: DbConn, cookies: &CookieJar<'_>, login: Json<LoginData>) -> Result<Status> {
-    todo!("Check login details in db")
-    // cookies.add_private(Cookie::new("auth", "1"));
-    // return Ok(Status::NoContent);
-
-    // Ok(Status::Unauthorized)
+    let Some(admin) = Admin::by_username((*login).user_name.clone(), &conn).await? else {
+        Err(anyhow!("user not found"))?
+    };
+    admin.check_password(&login.password)?;
+    //todo!("Check login details in db")
+    cookies.add_private(Cookie::new("auth", "1"));
+    return Ok(Status::NoContent);
 }
 
 #[post("/logout")]
-async fn logout(cookies: &CookieJar<'_>) -> Result<NoContent> {
+async fn logout(cookies: &CookieJar<'_>, _admin: AdminUser) -> Result<NoContent> {
     cookies.remove_private(Cookie::named("auth"));
+    Ok(NoContent)
+}
+
+#[post("/create_admin", data = "<admin>")]
+async fn create_admin(conn: DbConn, admin: Json<NewAdmin>) -> Result<NoContent> {
+    Admin::insert((*admin).clone(), &conn).await?;
     Ok(NoContent)
 }
 
@@ -405,7 +414,8 @@ fn rocket() -> _ {
                 edit_case,
                 delete_case,
                 login,
-                logout
+                logout,
+                create_admin
             ],
         )
 }

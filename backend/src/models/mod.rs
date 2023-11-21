@@ -1,3 +1,4 @@
+pub mod admin;
 pub mod case;
 pub mod cooler;
 pub mod cpu;

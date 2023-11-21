@@ -1,0 +1,5 @@
+CREATE TABLE admins (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username VARCHAR(100) NOT NULL,
+    password_hash VARCHAR(100) NOT NULL
+);
