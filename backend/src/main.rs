@@ -70,7 +70,7 @@ impl<'r> FromRequest<'r> for AdminUser {
 
 #[derive(Deserialize)]
 pub struct LoginData {
-    pub user_name: String,
+    pub username: String,
     pub password: String,
 }
 
@@ -344,12 +344,14 @@ async fn delete_case(conn: DbConn, id: i32, _admin: AdminUser) -> Result<NoConte
 
 #[post("/auth", data = "<login>")]
 async fn login(conn: DbConn, cookies: &CookieJar<'_>, login: Json<LoginData>) -> Result<Status> {
-    let Some(admin) = Admin::by_username((*login).user_name.clone(), &conn).await? else {
+    let Some(admin) = Admin::by_username((*login).username.clone(), &conn).await? else {
         Err(anyhow!("user not found"))?
     };
     admin.check_password(&login.password)?;
     //todo!("Check login details in db")
-    cookies.add_private(Cookie::new("auth", "1"));
+    let mut cookie = Cookie::new("auth", "1");
+    cookie.set_secure(true);
+    cookies.add_private(cookie);
     return Ok(Status::NoContent);
 }
 
