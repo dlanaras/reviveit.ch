@@ -8,9 +8,9 @@
 
 <a href={path} class={$page.url.pathname === path ? "active" : ""}>
   {#if (path !== "/")}
-  <h1>{name}</h1>
+    {name}
   {:else}
-  <img src="reviveit.logo.png" alt="ReviveIT logo" height="128px">
+    <img src="reviveit.logo.png" alt="ReviveIT logo" height="96px">
   {/if}
 </a>
 
@@ -31,6 +31,8 @@
 
   a {
     width: 100%;
+    font-size: 1.5em;
+    font-weight: bold;
   }
 
   .active {
