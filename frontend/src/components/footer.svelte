@@ -15,11 +15,13 @@
 	div {
 		background-color: #614880;
 		display: flex;
-		justify-content: space-around;
 		width: 100%;
 		overflow: hidden;
+		justify-content: space-around;
 		align-items: center;
+		flex-direction: column;
 		flex-shrink: 0;
+		flex-wrap: wrap;
 	}
 
 	p {
@@ -32,5 +34,11 @@
 
 	a.link {
 		text-decoration: none !important;
+	}
+
+	@media screen and (min-width: 600px) {
+		div {
+			flex-direction: row;
+		}
 	}
 </style>
