@@ -3,6 +3,7 @@
 </svelte:head>
 
 <div class="content">
+	<h1>Datenschutzerklärung</h1>
 	<p>
 		<br />
 		ReviveIT<br />

@@ -3,6 +3,7 @@
 </svelte:head>
 
 <div class="content">
+	<h1>Impressum</h1>
 	<p>
 		<b>Verantwortliche Instanz:</b><br />
 		ReviveIT<br />Austellungsstrasse 70<br />
