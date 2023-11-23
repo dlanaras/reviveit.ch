@@ -6,7 +6,9 @@
 			>Datenschutzerklärung</a
 		>
 	</p>
-	<p>🄯 GPLv3 {new Date().getFullYear()}</p>
+	<p>
+		<span style="rotate: 180deg; display: inline-block">&copy;</span> GPLv3 {new Date().getFullYear()}
+	</p>
 </div>
 
 <style>
