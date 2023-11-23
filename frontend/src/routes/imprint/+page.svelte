@@ -1,4 +1,4 @@
-<div>
+<div class="content">
 	<p>
 		<b>Verantwortliche Instanz:</b><br />
 		ReviveIT<br />Austellungsstrasse 70<br />
