@@ -5,17 +5,19 @@
 	export let name = 'm152';
 </script>
 
-<a href={path} class={$page.url.pathname === path ? 'active' : ''}>
-	{#if path !== '/'}
+{#if path !== '/'}
+	<a href={path} class={$page.url.pathname === path ? 'active' : ''}>
 		{name}
-	{:else}
+	</a>
+{:else}
+	<a href={path} class={$page.url.pathname === path ? 'logo active' : 'logo'}>
 		<img src="reviveit.logo.png" alt="ReviveIT logo" height="96px" />
-	{/if}
-</a>
+	</a>
+{/if}
 
 <style>
 	a:hover {
-		background-color: #800080;
+		text-decoration: underline !important;
 	}
 
 	a:link {
@@ -31,18 +33,23 @@
 	a {
 		width: 100%;
 		font-size: 1.5em;
-		font-weight: bold;
-		padding: 0.7em 0;
+		font-weight: normal;
+		cursor: pointer;
+		text-decoration: underline;
+		padding: 0.5em 0;
+	}
+
+	a.logo {
+		margin: 0;
+		padding: 0 !important;
 	}
 
 	.active {
-		background-color: #800080;
-		cursor: pointer;
+		font-weight: bold;
 	}
 
 	img {
-		margin-top: 16px;
-		margin-bottom: 16px;
-		filter: drop-shadow(3px 3px 0 black);
+		margin: 8px;
+		filter: drop-shadow(2px 2px 0 black);
 	}
 </style>

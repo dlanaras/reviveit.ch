@@ -5,7 +5,7 @@
 }
 
 html, body {
-    background-color: black;
+    background-color: #212121;
     margin: 0;
 }
 
@@ -18,8 +18,16 @@ a {
     text-decoration: none;
 }
 
-.content {
-    margin: 0;
-    width: 100%;
+h1, h2, h3, h4, h5, h6 {
+    font-family: Verdana, sans-serif;
+}
+
+h1 {
     text-align: center;
+}
+
+.content {
+    margin: 0 auto;
+    width: 95%;
+    max-width: 980px;
 }
