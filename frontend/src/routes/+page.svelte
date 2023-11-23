@@ -3,15 +3,20 @@
 </svelte:head>
 
 <div class="content">
-	<h1>Unsere Website</h1>
-
+	<h1>ReviveIT</h1>
 	<div>
-		<h2>Don't want it?</h2>
-		<p>Wenn Sie alte Computer nicht mehr brauchen, können Sie sie an uns verkaufen</p>
+		<h2>Unsere Dienstleistung</h2>
+		<p>
+			ReviveIt ist ein Unternehmen, das kostengünstige, geprüfte Computer und Komponenten anbietet, die von Informatiklernenden überprüft werden.
+			Unser Alleinstellungsmerkmal ist unser umfassendes Fachwissen und unser starkes Umweltengagement.
+			Unsere Produkte bieten ein herausragendes Preis-Leistungs-Verhältnis und zeichnen sich durch ihre hohe Qualität aus.
+			Wir setzen Elektronik einer zweiten Chance zu und führen strenge Qualitätskontrollen durch.
+			Darüber hinaus bieten wir kundenspezifische Konfigurationen an, unterstützen unsere Kunden kostenlos und gewähren Garantien. 
+		</p>
 	</div>
-
 	<div>
-		<h2>We revive it.</h2>
-		<p>Die alten oder langsamen Computern machen wir wieder frisch.</p>
+		<h2>Unsere Mission</h2>
+		<p>Unsere Mission bei ReviveIt ist es, die Zukunft der Elektronik zu gestalten,
+			 indem wir erstklassige generalüberholte Computer anbieten und gleichzeitig einen wesentlichen Beitrag zur Reduzierung von Elektroschrott und zur Schonung von Ressourcen leisten. </p>
 	</div>
 </div>

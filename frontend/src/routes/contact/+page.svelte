@@ -15,3 +15,9 @@
 	<p><a href="mailto:info@reviveit.ch">info@reviveit.ch</a></p>
 	<p>Um uns zu kontaktieren, schreiben Sie eine E-Mail.</p>
 </div>
+
+<style>
+	a {
+		text-decoration: underline;
+	}
+</style>

@@ -13,19 +13,19 @@
 	<div class="img-container">
 		<figure>
 			<img src="/img/sven.png" alt="Sven Oppliger" />
-			<figcaption>Sven Oppliger</figcaption>
+			<figcaption>Sven Oppliger - CEO</figcaption>
 		</figure>
 		<figure>
 			<img src="/img/dimi.png" alt="Dimitrios Lanaras" />
-			<figcaption>Dimitrios Lanaras</figcaption>
+			<figcaption>Dimitrios Lanaras - CPO Verwantwortlich für Einkauf und Reparaturen</figcaption>
 		</figure>
 		<figure>
 			<img src="/img/nils.png" alt="Nils Hindermann" />
-			<figcaption>Nils Hindermann</figcaption>
+			<figcaption>Nils Hindermann - CFO Verantwortlich für Marketing, Verkauf und Finanzen</figcaption>
 		</figure>
 		<figure>
 			<img src="/img/luna.png" alt="Luna Neff" />
-			<figcaption>Luna Neff</figcaption>
+			<figcaption>Luna Neff - CIO Verantwortlich für IT und Administration</figcaption>
 		</figure>
 	</div>
 </div>
@@ -38,7 +38,10 @@
 	}
 
 	img {
-		width: 250px;
 		border-radius: 10px;
+	}
+
+	figcaption, img {
+		width: 250px;
 	}
 </style>

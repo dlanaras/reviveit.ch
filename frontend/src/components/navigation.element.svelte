@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 
 	export let path = '/';
-	export let name = 'm152';
+	export let name = '';
 </script>
 
 {#if path !== '/'}
