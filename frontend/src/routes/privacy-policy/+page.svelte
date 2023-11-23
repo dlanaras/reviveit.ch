@@ -1,3 +1,7 @@
+<svelte:head>
+	<title>Datenschutzerklärung - ReviveIT</title>
+</svelte:head>
+
 <div class="content">
 	<p>
 		<br />

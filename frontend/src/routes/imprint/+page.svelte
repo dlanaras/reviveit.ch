@@ -1,3 +1,7 @@
+<svelte:head>
+	<title>Impressum - ReviveIT</title>
+</svelte:head>
+
 <div class="content">
 	<p>
 		<b>Verantwortliche Instanz:</b><br />
