@@ -9,3 +9,4 @@ pub mod mobo;
 pub mod psu;
 pub mod ram;
 pub mod ssd;
+pub mod computer;
