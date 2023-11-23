@@ -7,6 +7,7 @@
 html, body {
     background-color: #212121;
     margin: 0;
+    overflow: hidden;
 }
 
 * {
@@ -27,6 +28,7 @@ h1 {
 }
 
 .content {
+    flex: 1;
     margin: 0 auto;
     width: 95%;
     max-width: 980px;

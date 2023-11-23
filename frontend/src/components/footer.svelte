@@ -19,8 +19,7 @@
 		width: 100%;
 		overflow: hidden;
 		align-items: center;
-		position: fixed;
-		bottom: 0;
+		flex-shrink: 0;
 	}
 
 	p {
