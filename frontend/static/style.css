@@ -1,0 +1,35 @@
+@font-face {
+    font-family: "Lilex NerdFont Regular";
+    src: url("fonts/LilexNerdFont-Regular.ttf");
+    font-display: swap;
+}
+
+html, body {
+    background-color: #212121;
+    margin: 0;
+    overflow: hidden;
+}
+
+* {
+    color: white;
+    font-family: "Lilex NerdFont Regular", monospace;
+}
+
+a {
+    text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: Verdana, sans-serif;
+}
+
+h1 {
+    text-align: center;
+}
+
+.content {
+    flex: 1;
+    margin: 0 auto;
+    width: 95%;
+    max-width: 980px;
+}

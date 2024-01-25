@@ -1,46 +1,55 @@
 <script>
-  import { page } from "$app/stores";
+	import { page } from '$app/stores';
 
-  export let path = "/";
-  export let name = "m152";
+	export let path = '/';
+	export let name = '';
 </script>
 
-
-<a href={path} class={$page.url.pathname === path ? "active" : ""}>
-  {#if (path !== "/")}
-  <h1>{name}</h1>
-  {:else}
-  <img src="reviveit.logo.png" alt="ReviveIT logo" height="128px">
-  {/if}
-</a>
+{#if path !== '/'}
+	<a href={path} class={$page.url.pathname === path ? 'active' : ''}>
+		{name}
+	</a>
+{:else}
+	<a href={path} class={$page.url.pathname === path ? 'logo active' : 'logo'}>
+		<img src="reviveit.logo.png" alt="ReviveIT logo" height="96px" />
+	</a>
+{/if}
 
 <style>
-  a:hover {
-    background-color: #800080;
-  }
+	a:hover {
+		text-decoration: underline !important;
+	}
 
-  a:link {
-    text-decoration: inherit;
-    color: inherit;
-  }
+	a:link {
+		text-decoration: inherit;
+		color: inherit;
+	}
 
-  a:visited {
-    text-decoration: inherit;
-    color: inherit;
-  }
+	a:visited {
+		text-decoration: inherit;
+		color: inherit;
+	}
 
-  a {
-    width: 100%;
-  }
+	a {
+		width: 100%;
+		font-size: 1.5em;
+		font-weight: normal;
+		cursor: pointer;
+		text-decoration: underline;
+		padding: 0.5em 0;
+	}
 
-  .active {
-    background-color: #800080;
-    cursor: pointer;
-  }
+	a.logo {
+		margin: 0;
+		padding: 0 !important;
+	}
 
-  img {
-    margin-top: 16px;
-    margin-bottom: 16px;
-    filter: drop-shadow(3px 3px 0 black);
-  }
+	.active {
+		font-weight: bold;
+	}
+
+	img {
+		margin: 8px;
+		filter: drop-shadow(2px 2px 0 black);
+	}
 </style>
