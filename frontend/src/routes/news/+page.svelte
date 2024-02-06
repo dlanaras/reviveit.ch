@@ -26,21 +26,20 @@
 	{#if showWarning}
 		<h1>Die Neuigkeiten konnten nicht geladen werden. Bitte laden sie die Seite neu.</h1>
 	{:else}
-		{#if articles.length === 0}
+		{#if !articles || articles.length === 0}
 			<h1>Die Neuigkeiten sind am laden...</h1>
+		{:else}
+			{#each articles as article}
+				<article>
+					<div style="display: flex; align-items: center;">
+						<h2 style="margin-right: 1rem;">{article.title}</h2>
+						{article.date}
+					</div>
+					<p>{article.content}</p>
+				</article>
+			{/each}
 		{/if}
 	{/if}
-
-	<h1>Neuigkeiten werden geladen</h1>
-	{#each articles as article}
-		<article>
-			<div style="display: flex; align-items: center;">
-				<h2 style="margin-right: 1rem;">{article.title}</h2>
-				{article.date}
-			</div>
-			<p>{article.content}</p>
-		</article>
-	{/each}
 
 	<!--article>
 		<div style="display: flex; align-items: center;">
