@@ -23,10 +23,6 @@
 			<img src="/img/nils.png" alt="Nils Hindermann" />
 			<figcaption>Nils Hindermann - CFO Verantwortlich für Marketing, Verkauf und Finanzen</figcaption>
 		</figure>
-		<figure>
-			<img src="/img/luna.png" alt="Luna Neff" />
-			<figcaption>Luna Neff - CIO Verantwortlich für IT und Administration</figcaption>
-		</figure>
 	</div>
 </div>
 

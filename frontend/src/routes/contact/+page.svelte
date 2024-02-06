@@ -9,8 +9,7 @@
 		<strong>Ansprechpersonen:</strong><br />
 		Sven Oppliger<br />
 		Dimitrios Lanaras<br />
-		Nils Hindermann<br />
-		Luna Neff
+		Nils Hindermann
 	</p>
 	<p><a href="mailto:info@reviveit.ch">info@reviveit.ch</a></p>
 	<p>Um uns zu kontaktieren, schreiben Sie eine E-Mail.</p>

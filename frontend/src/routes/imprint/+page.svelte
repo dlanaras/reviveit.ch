@@ -13,8 +13,7 @@
 		<strong>Vertretungsberechtigte Personen</strong><br />
 		Sven Kevin Oppliger<br />
 		Dimitrios Lanaras<br />
-		Nils Oliver Hindermann<br />
-		Luna Neff<br /><br />
+		Nils Oliver Hindermann<br /><br />
 		<strong>Name des Unternehmens</strong>: ReviveIT<br /><br />
 		<strong>Haftungsausschluss</strong><br />
 		Der Autor übernimmt keine Gewähr für die Richtigkeit, Genauigkeit, Aktualität, Zuverlässigkeit und

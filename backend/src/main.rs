@@ -17,12 +17,13 @@ use models::mobo::{Mobo, NewMobo};
 use models::psu::{NewPsu, Psu};
 use models::ram::{NewRam, Ram};
 use models::ssd::{NewSsd, Ssd};
+use models::article::{NewArticle, Article};
 use rocket::{
     fairing::AdHoc,
     http::{ContentType, Cookie, CookieJar, Status},
     outcome::IntoOutcome,
-    request::{self, FromRequest, Request},
-    response::status::{BadRequest, Created, NoContent, Unauthorized},
+    request::{self, FromRequest},
+    response::status::{Created, NoContent},
     serde::json::Json,
     Build, Rocket,
 };
@@ -340,6 +341,32 @@ async fn delete_case(conn: DbConn, id: i32, _admin: AdminUser) -> Result<NoConte
 
 // Computers
 
+// Articles
+#[get("/articles")]
+async fn index_article(conn: DbConn) -> Result<(ContentType, String)> {
+    let articles = Article::all(&conn).await?;
+    let json = serde_json::to_string(&articles)?;
+    Ok((ContentType::JSON, json))
+}
+
+#[post("/articles", data = "<article>")]
+async fn create_article(conn: DbConn, article: Json<NewArticle>, _admin: AdminUser) -> Result<Created<()>> {
+    let created_id = Article::insert(article.0, &conn).await?;
+    Ok(Created::new(format!("/articles/{}", created_id)))
+}
+
+#[put("/articles", data = "<article>")]
+async fn edit_article(conn: DbConn, article: Json<Article>, _admin: AdminUser) -> Result<NoContent> {
+    Article::update(article.0, &conn).await?;
+    Ok(NoContent)
+}
+
+#[delete("/articles/<id>")]
+async fn delete_article(conn: DbConn, id: i32, _admin: AdminUser) -> Result<NoContent> {
+    Article::delete(id, &conn).await?;
+    Ok(NoContent)
+}
+
 // Login
 
 #[post("/auth", data = "<login>")]
@@ -415,6 +442,10 @@ fn rocket() -> _ {
                 create_case,
                 edit_case,
                 delete_case,
+                index_article,
+                create_article,
+                edit_article,
+                delete_article,
                 login,
                 logout,
                 create_admin
