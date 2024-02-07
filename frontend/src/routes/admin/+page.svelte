@@ -1,11 +1,16 @@
-<div class="container">
+<div class="content container">
     <img src="authorized_only.png" alt="AUTHORIZED PERSONAL ONLY">
-    <form>
+    <form method="POST" action="?/login">
         <label for="Username">Name</label>
-        <input type="text" name="name">
+        <input type="text" name="username">
         <label for="Password">Password</label>
         <input type="password" name="password">
-        <input type="submit" value="Authorize">
+        <label for="Register Secret">Register Secret</label>
+        <input type="password" name="register_secret">
+        <div class="buttons">
+            <input type="submit" value="Login">
+            <input type="submit" value="Register" formaction="?/register">
+        </div>
     </form>
 </div>
 
@@ -37,5 +42,10 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: space-evenly;
     }
 </style>

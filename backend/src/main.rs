@@ -18,6 +18,9 @@ use models::psu::{NewPsu, Psu};
 use models::ram::{NewRam, Ram};
 use models::ssd::{NewSsd, Ssd};
 use models::article::{NewArticle, Article};
+use rocket::fairing::{Fairing, Info, Kind};
+use rocket::http::{Header, SameSite};
+use rocket::{Request, Response};
 use rocket::{
     fairing::AdHoc,
     http::{ContentType, Cookie, CookieJar, Status},
@@ -73,6 +76,27 @@ impl<'r> FromRequest<'r> for AdminUser {
 pub struct LoginData {
     pub username: String,
     pub password: String,
+}
+
+// CORS
+
+pub struct CORS;
+
+#[rocket::async_trait]
+impl Fairing for CORS {
+    fn info(&self) -> Info {
+        Info {
+            name: "Add CORS headers to responses",
+            kind: Kind::Response
+        }
+    }
+
+    async fn on_response<'r>(&self, _request: &'r Request<'_>, response: &mut Response<'r>) {
+        response.set_header(Header::new("Access-Control-Allow-Origin", "https://reviveit.ch"));
+        response.set_header(Header::new("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE"));
+        response.set_header(Header::new("Access-Control-Allow-Headers", "Content-Type, Set-Cookie"));
+        response.set_header(Header::new("Access-Control-Allow-Credentials", "true"));
+    }
 }
 
 // CPUS
@@ -378,6 +402,7 @@ async fn login(conn: DbConn, cookies: &CookieJar<'_>, login: Json<LoginData>) ->
     //todo!("Check login details in db")
     let mut cookie = Cookie::new("auth", "1");
     cookie.set_secure(true);
+    cookie.set_same_site(SameSite::None);
     cookies.add_private(cookie);
     return Ok(Status::NoContent);
 }
@@ -398,6 +423,7 @@ async fn create_admin(conn: DbConn, admin: Json<NewAdmin>) -> Result<NoContent> 
 fn rocket() -> _ {
     rocket::build()
         .attach(DbConn::fairing())
+        .attach(CORS)
         .attach(AdHoc::on_ignite("Run migrations", run_migrations))
         .mount(
             "/",
