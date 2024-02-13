@@ -1,7 +1,7 @@
 import config from "../../config.json"; 
 
 export const actions = {
-	login: async ({ request, cookies }) => {
+	login: async ({ request, cookies, fetch }) => {
 		const data = await request.formData();
         const body = {
             username: data.get('username')?.toString(),
@@ -13,8 +13,8 @@ export const actions = {
                 httpOnly: true,
                 secure: true,
                 sameSite: "none",
-                expires: getCookieValue('expires', authCookie),
-                path: getCookieValue('path', authCookie),
+                expires: new Date(getCookieValue('Expires', authCookie)),
+                path: getCookieValue('Path', authCookie)
             })
         })
 	},

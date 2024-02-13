@@ -7,7 +7,7 @@ mod schema {
             id -> Nullable<Integer>,
             title -> VarChar,
             content -> VarChar,
-            date -> Integer
+            date -> BigInt
         }
     }
 }
@@ -23,14 +23,14 @@ pub struct Article {
     pub id: Option<i32>,
     pub title: String,
     pub content: String,
-    pub date: i32
+    pub date: i64
 }
 
 #[derive(Deserialize)]
 pub struct NewArticle {
     pub title: String,
     pub content: String,
-    pub date: i32
+    pub date: i64
 }
 
 impl Article {
