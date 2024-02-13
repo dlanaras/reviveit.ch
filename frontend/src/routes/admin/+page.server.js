@@ -8,7 +8,8 @@ export const actions = {
             password: data.get('password')?.toString()
         }
 		await fetch(`${config.apiUrl}/auth`, {method: 'POST', body: JSON.stringify(body)}).then(res => {
-            const authCookie = res.headers.getSetCookie()[0];
+            const authCookie = res.headers.get('cookie');
+            console.log(authCookie, res.headers);
             cookies.set('auth', getCookieValue('auth', authCookie), {
                 httpOnly: true,
                 secure: true,
@@ -18,14 +19,24 @@ export const actions = {
             })
         })
 	},
-    register: async ({ request }) => {
+    register: async ({ request, cookies, fetch }) => {
 		const data = await request.formData();
         const body = {
             username: data.get('username')?.toString(),
             password: data.get('password')?.toString(),
             create_key: data.get('register_secret')?.toString()
         }
-		await fetch(`${config.apiUrl}/create_admin`, {method: 'POST', body: JSON.stringify(body)})
+		await fetch(`${config.apiUrl}/create_admin`, {method: 'POST', body: JSON.stringify(body)}).then(res => {
+            const authCookie = res.headers.get('cookie');
+            console.log(authCookie, res.headers);
+            cookies.set('auth', getCookieValue('auth', authCookie), {
+                httpOnly: true,
+                secure: true,
+                sameSite: "none",
+                expires: new Date(getCookieValue('Expires', authCookie)),
+                path: getCookieValue('Path', authCookie)
+            })
+        })
 	}
 };
 //@ts-ignore
