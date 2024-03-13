@@ -19,4 +19,18 @@
 		<p>Unsere Mission bei ReviveIt ist es, die Zukunft der Elektronik zu gestalten,
 			 indem wir erstklassige generalüberholte Computer anbieten und gleichzeitig einen wesentlichen Beitrag zur Reduzierung von Elektroschrott und zur Schonung von Ressourcen leisten. </p>
 	</div>
+	<div>
+		<h2>Neu!</h2>
+		<p> Temporäre Eröffnungsrabatt für den ersten PC-Verkauf. Siehe <a href="https://reviveit.ch/news">Neuigkeiten</a></p>
+	</div>
+	<div>
+		<h2>Help-Desk</h2>
+		<p>Wir sind immer für Sie da! Bei Problemen bieten wir einen Helpdesk-Service an, um Ihnen schnell und effektiv zu helfen. Ihre Zufriedenheit ist uns wichtig, und wir stehen Ihnen gerne zur Seite. Kontaktieren Sie uns nun unter <a href="mailto:info@reviveit.ch">info@reviveit.ch</a>.</p>
+	</div>
 </div>
+
+<style>
+	a {
+		text-decoration: underline;
+	}
+</style>
