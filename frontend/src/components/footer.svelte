@@ -8,7 +8,7 @@
 		ReviveIT Team<br />
 		<a href="/imprint">Impressum</a>&nbsp;&middot;&nbsp;<a href="/privacy-policy"
 			>Datenschutzerklärung</a
-		>&nbsp;&middot;&nbsp;<a href="" target="_blank" class="fa fa-linkedin"/>&nbsp;&middot;&nbsp;
+		>&nbsp;&middot;&nbsp;<a href="https://www.linkedin.com/company/reviveit-ch/about/" target="_blank" class="fa fa-linkedin"/>&nbsp;&middot;&nbsp;
 		<a href="https://www.youtube.com/channel/UCVoNLK0OEj2DMcECFFJ4yUA/about" target="_blank" class="fa fa-youtube" />
 	</p>
 	<p>
